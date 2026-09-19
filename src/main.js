@@ -20,8 +20,7 @@ const game = new Phaser.Game(config);
 
 function preload() {
   // Load a simple tank sprite or placeholder graphic
-  this.load.image('tank', 'https://labs.phaser.io/assets/sprites/tank-body.png');
-  this.load.image('turret', 'https://labs.phaser.io/assets/sprites/tank-turret.png');
+  this.load.image('game', 'assets/game.png');
 }
 
 function create() {
@@ -32,7 +31,7 @@ function create() {
     net.initHost(
       (clientId) => {
         // Spawn remote tank on host when a guest joins
-        tanks[clientId] = scene.physics.add.sprite(200, 200, 'tank');
+        tanks[clientId] = scene.physics.add.sprite(200, 200, 'game');
       },
       (clientId, inputData) => {
         // Host applies guest inputs to the guest's sprite
@@ -63,7 +62,43 @@ function create() {
 
   // Local Controls setup
   this.cursors = this.input.keyboard.addKeys('W,A,S,D');
+  // Example map data: 0 is empty, 1 is a wall
+  const levelData = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 1, 1, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+  ];
+
+  const map = this.make.tilemap({
+    data: levelData,
+    tileWidth: 32,
+    tileHeight: 32
+  });
+
+  const tileset = map.addTilesetImage('game', null, 32, 32);
+  const layer = map.createLayer(0, tileset, 0, 0);
+
+  layer.setCollision(1);
+
+  // Extract one tank region from game.png.
+  // Replace these coordinates with the actual tank region.
+  this.textures.get('game').add(
+    'tank',
+    0,
+    910, // x in game.png
+    515, // y in game.png
+    64,  // width
+    48   // height
+  );
+
+  this.playerTank = this.physics.add.sprite(160, 128, 'game', 'tank');
+
+  this.physics.add.collider(this.playerTank, layer);
 }
+
 
 function update() {
   // Gather keyboard controls
