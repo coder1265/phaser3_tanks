@@ -74,11 +74,11 @@ function create() {
 
   const map = this.make.tilemap({
     data: levelData,
-    tileWidth: 32,
-    tileHeight: 32
+    tileWidth: 50,
+    tileHeight: 50
   });
 
-  const tileset = map.addTilesetImage('game', null, 32, 32);
+  const tileset = map.addTilesetImage('game', null, 700, 550);
   const layer = map.createLayer(0, tileset, 0, 0);
 
   layer.setCollision(1);
@@ -91,7 +91,7 @@ function create() {
     910, // x in game.png
     515, // y in game.png
     64,  // width
-    48   // height
+    64   // height
   );
 
   this.playerTank = this.physics.add.sprite(160, 128, 'game', 'tank');
