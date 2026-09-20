@@ -1,25 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <title>Tank Game Multiplayer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Awesome Tanks 2</title>
   <link rel="stylesheet" href="styles.css" />
-  <!-- CDN Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.min.js"></script>
   <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 </head>
+
 <body>
-  <p>Awesome tanks 2 multiplayer</p>
-  <div class="centered">
-  <div id="ui">
-    <button id="host-btn">Host Game</button>
-    <input type="text" id="join-id" placeholder="Enter Host Peer ID" />
-    <button id="join-btn">Join Game</button>
-    <div class="host">Host ID: <span id="host-id">You are not the host.</span></div>
-  </div>
-  <div id="game-container"></div>
+  <main id="app-shell" class="app-shell">
+    <section class="launch-panel" aria-labelledby="game-title">
+      <h3 id="game-title">Awesome Tanks 2</h3>
+
+      <div class="mode-grid" id="ui">
+        <button id="host-btn" class="mode-button mode-button--host" type="button">
+          <span class="mode-icon" aria-hidden="true">+</span>
+          <span>
+            <strong>Host a game</strong>
+            <small>Create a room for friends</small>
+          </span>
+        </button>
+
+        <div class="join-card">
+          <label for="join-id">Join with a host ID</label>
+          <div class="join-row">
+            <input type="text" id="join-id" placeholder="Paste host ID" autocomplete="off" />
+            <button id="join-btn" class="join-button" type="button">Join</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="connection-status" role="status" aria-live="polite">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span id="status-text">Waiting for a game mode</span>
+      </div>
+
+    </section>
+
+    <section id="lobby-panel" class="lobby-panel" aria-labelledby="lobby-title" hidden>
+      <p class="panel-label">Lobby</p>
+      <h2 id="lobby-title">Preparing game</h2>
+      <p id="lobby-status" class="lobby-status">Waiting for players.</p>
+
+      <div id="host-code-row" class="host-code-row">
+        <span>Host ID</span>
+        <code id="host-id">Connecting...</code>
+      </div>
+
+      <div class="players-heading">
+        <span>Players joined</span>
+        <strong id="player-count">1</strong>
+      </div>
+      <ul id="player-list" class="player-list"></ul>
+
+      <button id="start-game-btn" class="start-button" type="button" hidden>
+        Start game
+      </button>
+    </section>
+
+  </main>
+  <section id="game-container" aria-label="Tank game"></section>
   <script src="src/main.js" type="module"></script>
-  </div>
 
 </body>
+
 </html>
